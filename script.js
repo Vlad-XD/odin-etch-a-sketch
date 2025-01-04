@@ -21,9 +21,13 @@ for(let i = 0; i < 16; i++) {
     pixel.style.minHeight = PIXEL_HEIGHT;
     pixel.style.backgroundColor = "black";
     pixel.style.position = "absolute";
-    pixel.style.left = `${e.clientX}px`;
-    pixel.style.top = `${e.clientY}px`;
+    //without setting pointerEvents to none, pixels can cause offsetX/Y to be incorrect
+    pixel.style.pointerEvents = "none"; 
+    let rect = e.currentTarget.getBoundingClientRect();
+    pixel.style.left = `${e.offsetX}px`;
+    pixel.style.top = `${e.offsetY}px`;
     e.currentTarget.appendChild(pixel);
+    // console.log(`Target: ${e.currentTarget.className} X: Y:`);
   })
 
   // append square grid
