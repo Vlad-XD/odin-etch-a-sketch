@@ -3,4 +3,12 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
+  padding: 8px;
+}
+
+.grid-square {
+  width: 200px;
+  height: 200px;
+  border: 2px black solid;
+  border-radius: 10px;
 }
