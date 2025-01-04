@@ -9,6 +9,7 @@
 .grid-square {
   width: 200px;
   height: 200px;
+  flex-shrink: 0;
   border: 2px black solid;
   border-radius: 10px;
 }
