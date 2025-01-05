@@ -1,6 +1,6 @@
 // variable initializations
 const DEFAULT_GRID_SIZE = 16;
-const MIN_USER_INPUT = 10;
+const MIN_USER_INPUT = 1;
 const MAX_USER_INPUT = 100;
 const INITIAL_PROMPT_MESSAGE = "Input a new grid size: ";
 const INVALID_PROMPT_MESSAGE = "Not a valid input!\nEnter new input:";
@@ -90,8 +90,8 @@ function createGrid(gridSize, gridBox, gridBoxDimension) {
 
       // add hover listener to grid
       newGrid.addEventListener("mousemove", (e) => {
-        e.currentTarget.style.backgroundColor = "black";
-      })
+        e.currentTarget.style.backgroundColor = getRandomColorString();
+      }, {once: true});
 
       // append square grid
       gridContainer.appendChild(newGrid);
@@ -139,4 +139,32 @@ function calcGridDim(gridSize, boxDimension) {
   let gridDimension = (boxDimension-((gridSize+1)*GRID_BORDER_SIZE))/gridSize;
   return gridDimension;
   
+}
+
+/*
+  getRandomColorString: given the number of grids and the dimension/padding of the
+               box containing the grids, returns the grid dimension to make
+               the squares fit evenly in the grid.
+  Parameters: N/A
+  Return value: string with color (in rgb notation)
+*/
+
+function getRandomColorString() {
+  return (`rgb(${getRandomIntInclusive(0,255)},
+               ${getRandomIntInclusive(0,255)},
+               ${getRandomIntInclusive(0,255)})`);
+}
+
+
+// ***** fucntion I borrowed from MDF Math.random() reference page
+/*
+  getRandomInclusive: given a min and a max, return a random integer within
+                      that range, including the passed min and max.
+  Parameters: number min, number max
+  Return value: integer
+*/
+function getRandomIntInclusive(min, max) {
+  const minCeiled = Math.ceil(min);
+  const maxFloored = Math.floor(max);
+  return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
 }
