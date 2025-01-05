@@ -12,26 +12,29 @@ body {
   border-radius: 10px;
 }
 
-.grid-container {
-  border: 2px black solid;
+.grid-box {
+  border: 4px black solid;
   border-radius: 10px;
   display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.grid-container {
+  /* border: 2px black solid;
+  border-radius: 10px; */
+  display: flex;
   flex-wrap: wrap;
-  max-width: 1200px;
-  min-width: 1200px;
-  max-height: 1000px;
-  min-height: 1000px;
-  align-items: center;
   justify-content: center;
   gap: 0px;
   padding: 0px;
+  margin: 0px;
   flex-grow: 0;
+  align-content: flex-start;
+
+
 }
 
 .grid-square {
-  position: relative;
-  width: 200px;
-  height: 200px;
-  flex-shrink: 1;
-  border: 2px black solid;
+  border: 1px lightgray solid;
 }
