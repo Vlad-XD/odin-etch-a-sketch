@@ -15,11 +15,8 @@ gridBox.style.width = `${GRID_BOX_DIMENSIONS}px`;
 gridBox.style.height = `${GRID_BOX_DIMENSIONS}px`;
 gridBox.style.padding = `${GRID_BOX_PADDING}px`;
 
-// find our grid container div
-const flexContainer = document.querySelector(".grid-container");
-
 // create initial grid
-createGrid(DEFAULT_GRID_SIZE, flexContainer, GRID_BOX_DIMENSIONS, GRID_BOX_PADDING);
+createGrid(DEFAULT_GRID_SIZE, gridBox, GRID_BOX_DIMENSIONS, GRID_BOX_PADDING);
 
 // when input button is pressed, prompt user for new grid size
 const inputButton = document.querySelector("#input-button");
@@ -55,8 +52,8 @@ inputButton.addEventListener("click", () => {
     } else {
       validInputEntered = true;
       // delete old grid and make new grid
-      destroyGrid(flexContainer);
-      createGrid(userInputInt, flexContainer, GRID_BOX_DIMENSIONS, GRID_BOX_PADDING);
+      destroyGrid(gridBox);
+      createGrid(userInputInt, gridBox, GRID_BOX_DIMENSIONS);
     }
     
   } while(!validInputEntered);
@@ -65,47 +62,67 @@ inputButton.addEventListener("click", () => {
 })
 
 /*
-  createGrid: adds drawables grids to the pass gridContainer element.
+  createGrid: adds drawables grids to the passed gridBox element.
               Number of grids based on passed gridSize argument. Utilizes
               passed gridBox properties to size drawable grids.
-  Parameters: int gridSize, <div> gridContainer, <div> gridBox
+  Parameters: int gridSize, <div> gridBox, int gridBoxDimension
   Return value: N/A
 */
 
-function createGrid(gridSize, gridContainer, gridBoxDimension, gridBoxPadding) {
-  // use loop to create grids
-  for(let i = 0; i < gridSize**2; i++) {
-    // create new square grid
-    let newGrid = document.createElement("div");
-    newGrid.className = "grid-square";
+function createGrid(gridSize, gridBox, gridBoxDimension) {
 
-    // calculate square grid dimensions
-    let gridDimension = calcGridDim(gridSize, gridBoxDimension, gridBoxPadding);
-    newGrid.style.width = `${gridDimension}px`;
-    newGrid.style.height = `${gridDimension}px`;
+  // use loops to create rows
+ 
+  for(let i = 0; i < gridSize; i++) {
+    let gridContainer = document.createElement("div");
+    gridContainer.className = "grid-container";
 
-    // add hover listener to grid
-    newGrid.addEventListener("mousemove", (e) => {
-      e.currentTarget.style.backgroundColor = "black";
-    })
+    // use loop to create grids
+    for(let i = 0; i < gridSize; i++) {
+      // create new square grid
+      let newGrid = document.createElement("div");
+      newGrid.className = "grid-square";
 
-    // append square grid
-    gridContainer.appendChild(newGrid);
+      // calculate square grid dimensions
+      let gridDimension = calcGridDim(gridSize, gridBoxDimension);
+      newGrid.style.width = `${gridDimension}px`;
+      newGrid.style.height = `${gridDimension}px`;
+
+      // add hover listener to grid
+      newGrid.addEventListener("mousemove", (e) => {
+        e.currentTarget.style.backgroundColor = "black";
+      })
+
+      // append square grid
+      gridContainer.appendChild(newGrid);
+    }
+
+    // append row
+    gridBox.appendChild(gridContainer);
+
   }
 
 }
 
 /*
-  destroyGrid: destroys existing grids of passed gridContainer element.
-  Parameters: <div> gridContainer
+  destroyGrid: destroys existing grids of passed gridBox element.
+  Parameters: <div> gridBox
   Return value: N/A
 */
 
-function destroyGrid(gridContainer) {
-  const gridContainerChildren = document.querySelectorAll(`.${gridContainer.className} > .grid-square`);
-  gridContainerChildren.forEach((grid) => {
-    gridContainer.removeChild(grid);
-  })
+function destroyGrid(gridBox) {
+
+  const gridBoxRows = document.querySelectorAll(`.grid-container`);
+  gridBoxRows.forEach((row) => {
+
+    const gridContainerChildren = row.childNodes;
+    gridContainerChildren.forEach((grid) => {
+      row.removeChild(grid);
+    })
+
+    gridBox.removeChild(row);
+})
+
 }
 
 /*
@@ -116,9 +133,10 @@ function destroyGrid(gridContainer) {
   Return value: float gridDimension
 */
 
-function calcGridDim(gridSize, boxDimension, boxPadding) {
+function calcGridDim(gridSize, boxDimension) {
   // variable initializations
-  let gridDimension = (boxDimension)/gridSize;
+  let GRID_BORDER_SIZE = 1;
+  let gridDimension = (boxDimension-((gridSize+1)*GRID_BORDER_SIZE))/gridSize;
   return gridDimension;
   
 }
